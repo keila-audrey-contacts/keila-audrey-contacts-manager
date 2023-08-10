@@ -2,7 +2,7 @@ package src;
 
 import util.Input;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +26,9 @@ public class ContactsManager {
         }
         if (userMainMenuChoice == 3) {
             searchContact();
+        }
+        if (userMainMenuChoice == 4) {
+            deleteContact();
         }
     }
 
@@ -70,6 +73,47 @@ public class ContactsManager {
             throw new RuntimeException(e);
         }
     }
+
+
+
+    public static void deleteContact() {
+        Path contactsListPath = Paths.get("src/contacts.txt");
+        List<String> contactsList = null;
+        try {
+            contactsList = Files.readAllLines(contactsListPath);
+        String searchContactInfo = userInput.getString("Please input contact name to delete.").toLowerCase();
+        List<String> updatedContacts = new ArrayList<>();
+        for(String line : contactsList){
+            if(!line.toLowerCase().contains(searchContactInfo)){
+                updatedContacts.add(line);
+                userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
+            }
+        }
+        Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+//            String deleteContact = "";
+//            for (String line : contactsList) {
+//                if (line.toLowerCase().contains(searchContactInfo)) {
+//                    userInput.yesNo("Are you sure you want to delete" + line);
+//                    if(true){
+//                        deleteContact = line.replace(line, "");
+//                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/contacts.txt"))) {
+//                            writer.write(line);
+//                            writer.newLine();
+//                        } catch(IOException e){
+//                            throw new RuntimeException (e);
+//                        }
+//
+//                    } else {
+//                        System.out.println("ok");
+//
+//                    }
+//                }
+//            }
+        }
+
 
     public static void main(String[] args) {
         ContactsManager newContacts = new ContactsManager();
