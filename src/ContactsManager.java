@@ -32,9 +32,9 @@ public class ContactsManager {
         }
     }
 
-    public static void returnToMain(){
+    public static void returnToMain() {
         boolean userConfirmMenu = userInput.yesNo("Would you like to return to the main menu? (y/n)");
-        if(userConfirmMenu ==true){
+        if (userConfirmMenu == true) {
             ContactsManager returnToMenu = new ContactsManager();
         } else {
             System.out.println("Bye!");
@@ -89,27 +89,30 @@ public class ContactsManager {
     }
 
 
-
     public static void deleteContact() {
         Path contactsListPath = Paths.get("src/contacts.txt");
         List<String> contactsList = null;
         try {
             contactsList = Files.readAllLines(contactsListPath);
-        String searchContactInfo = userInput.getString("Please input contact name to delete.").toLowerCase();
-        List<String> updatedContacts = new ArrayList<>();
-        for(String line : contactsList){
-            if(!line.toLowerCase().contains(searchContactInfo)){
-                userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
-                updatedContacts.add(line);
+            String searchContactInfo = userInput.getString("Please input contact name to delete.").toLowerCase();
+            List<String> updatedContacts = new ArrayList<>();
+            for (String line : contactsList) {
+                if (!line.toLowerCase().contains(searchContactInfo)) {
+                    boolean userConfirmDelete = userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
+                    if (userConfirmDelete == true) {
+                        updatedContacts.add(line);
+                        Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+                        viewContacts();
+                        returnToMain();
+                    } else {
+                        returnToMain();
+                    }
+                }
             }
-        }
-        Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-        viewContacts();
-            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        }
+    }
 
 
     public static void main(String[] args) {
