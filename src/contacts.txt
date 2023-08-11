@@ -1,6 +1,5 @@
-Link 948392943
-Bobby bob 94307293
-Hero 39428093850
-Charlie 8439278739
-Kill Bill 493207932
-Rose 9340829753
+Name       | Phone number |
+---------------------------
+kali       | 210-333-1245
+sarah      | 123-456-7990   
+

@@ -46,25 +46,50 @@ public class ContactsManager {
         List<String> contactList = null;
         try {
             contactList = Files.readAllLines(contactsList);
-            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         for (int i = 0; i < contactList.size(); i++) {
             System.out.println(contactList.get(i));
         }
+        returnToMain();
 
+    }
+
+    private static String formatContactNumber(int number) {
+        String contactNumber = String.valueOf(number);
+        return contactNumber.substring(0, 3) + "-" + contactNumber.substring(3, 6) + "-" + contactNumber.substring(6);
+
+    }
+
+    private static boolean isValidContactNumber(int number) {
+        String contactNumber = String.valueOf(number);
+        return contactNumber.length() == 10;
     }
 
     public static void addContact() {
         Path contactsList = Paths.get("src/contacts.txt");
         List<String> contacts = new ArrayList<>();
         try {
-            String contactInfo = userInput.getString("Please input contact name and number");
+            String contactName = userInput.getString("Please input contact name");
+            int contactNumber;
+while(true) {
+    contactNumber = userInput.getInt("Please input 10-digit contact number");
+    if (isValidContactNumber(contactNumber)) {
+        break;
+    } else {
+        System.out.println("Contact number should have exactly 10 digits.");
+    }
+}
+            String formattedContactNumber = formatContactNumber(contactNumber);
+            String contactInfo = String.format("%-10s | %-15s\n", contactName, formattedContactNumber);
+
+//            String contactInfo = String.format("%-10s | %-10s\n", contactName, contactNumber.substring(0,3) + "-" +contactNumber.substring(3,6)+ "-" + contactNumber.substring(6));
             contacts.add(contactInfo);
+
             Files.write(contactsList, contacts, StandardOpenOption.APPEND);
             viewContacts();
-            returnToMain();
+//            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -96,19 +121,31 @@ public class ContactsManager {
             contactsList = Files.readAllLines(contactsListPath);
             String searchContactInfo = userInput.getString("Please input contact name to delete.").toLowerCase();
             List<String> updatedContacts = new ArrayList<>();
+            boolean foundContact = false;
+
             for (String line : contactsList) {
                 if (!line.toLowerCase().contains(searchContactInfo)) {
-                    boolean userConfirmDelete = userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
-                    if (userConfirmDelete == true) {
-                        updatedContacts.add(line);
-                        Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-                        viewContacts();
-                        returnToMain();
-                    } else {
-                        returnToMain();
-                    }
+                    updatedContacts.add(line);
+                } else {
+                    foundContact = true;
                 }
             }
+
+            if (foundContact) {
+                boolean userConfirmDelete = userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
+                if (userConfirmDelete == true) {
+                    Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+                    System.out.println("Contact deleted.");
+//                    returnToMain();
+
+                } else {
+                    System.out.println("Deletion canceled.");
+                    returnToMain();
+                }
+            } else {
+                System.out.println("There is no contact with that name");
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
