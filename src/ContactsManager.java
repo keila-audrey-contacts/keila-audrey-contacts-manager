@@ -32,17 +32,28 @@ public class ContactsManager {
         }
     }
 
+    public static void returnToMain(){
+        boolean userConfirmMenu = userInput.yesNo("Would you like to return to the main menu? (y/n)");
+        if(userConfirmMenu ==true){
+            ContactsManager returnToMenu = new ContactsManager();
+        } else {
+            System.out.println("Bye!");
+        }
+    }
+
     public static void viewContacts() {
         Path contactsList = Paths.get("src/contacts.txt");
         List<String> contactList = null;
         try {
             contactList = Files.readAllLines(contactsList);
+            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         for (int i = 0; i < contactList.size(); i++) {
             System.out.println(contactList.get(i));
         }
+
     }
 
     public static void addContact() {
@@ -52,6 +63,8 @@ public class ContactsManager {
             String contactInfo = userInput.getString("Please input contact name and number");
             contacts.add(contactInfo);
             Files.write(contactsList, contacts, StandardOpenOption.APPEND);
+            viewContacts();
+            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,12 +76,13 @@ public class ContactsManager {
         try {
             contactsList = Files.readAllLines(contactsListPath);
             String searchContactInfo = userInput.getString("Please input contact name");
-
+            returnToMain();
             for (String line : contactsList) {
                 if (line.toLowerCase().contains(searchContactInfo)) {
                     System.out.println(line);
                 }
             }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -85,33 +99,16 @@ public class ContactsManager {
         List<String> updatedContacts = new ArrayList<>();
         for(String line : contactsList){
             if(!line.toLowerCase().contains(searchContactInfo)){
-                updatedContacts.add(line);
                 userInput.yesNo("Are you sure you want to delete? " + searchContactInfo);
+                updatedContacts.add(line);
             }
         }
         Files.write(contactsListPath, updatedContacts, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        viewContacts();
+            returnToMain();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//            String deleteContact = "";
-//            for (String line : contactsList) {
-//                if (line.toLowerCase().contains(searchContactInfo)) {
-//                    userInput.yesNo("Are you sure you want to delete" + line);
-//                    if(true){
-//                        deleteContact = line.replace(line, "");
-//                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/contacts.txt"))) {
-//                            writer.write(line);
-//                            writer.newLine();
-//                        } catch(IOException e){
-//                            throw new RuntimeException (e);
-//                        }
-//
-//                    } else {
-//                        System.out.println("ok");
-//
-//                    }
-//                }
-//            }
         }
 
 
