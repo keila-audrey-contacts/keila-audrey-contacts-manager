@@ -1,4 +1,4 @@
-package src;
+package manage;
 
 import util.CallAFriend;
 import util.Input;
@@ -51,7 +51,7 @@ public class ContactsManager {
     }
 
     public static void viewContacts() {
-        Path contactsList = Paths.get("src/contacts.txt");
+        Path contactsList = Paths.get("manage/contacts.txt");
         List<String> contactList = null;
         try {
             contactList = Files.readAllLines(contactsList);
@@ -77,7 +77,7 @@ public class ContactsManager {
     }
 
     public static void addContact() {
-        Path contactsList = Paths.get("src/contacts.txt");
+        Path contactsList = Paths.get("manage/contacts.txt");
         List<String> contacts = new ArrayList<>();
         try {
             String contactName = userInput.getString("Please input contact name");
@@ -103,7 +103,7 @@ public class ContactsManager {
     }
 
     public static void searchContact() {
-        Path contactsListPath = Paths.get("src/contacts.txt");
+        Path contactsListPath = Paths.get("manage/contacts.txt");
         List<String> contactsList = null;
         try {
             contactsList = Files.readAllLines(contactsListPath);
@@ -128,7 +128,7 @@ public class ContactsManager {
 
 
     public static void deleteContact() {
-        Path contactsListPath = Paths.get("src/contacts.txt");
+        Path contactsListPath = Paths.get("manage/contacts.txt");
         List<String> contactsList = null;
         try {
             contactsList = Files.readAllLines(contactsListPath);
@@ -208,9 +208,6 @@ public class ContactsManager {
         System.exit(0);
     }
 
-    public static void main(String[] args) {
-        ContactsManager newContacts = new ContactsManager();
 
-    }
 
 }
