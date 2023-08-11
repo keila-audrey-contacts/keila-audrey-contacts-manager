@@ -174,6 +174,26 @@ public double getDouble(String prompt,double min, double max){
         return getDouble(min, max);
     }
 }
+    public long getLong() {
+        try {
+            return Long.parseLong(this.getString());
+        } catch (NumberFormatException e) {
+            System.out.println("You must enter a number.");
+//            // recursion! like a loop. will try to get the input again. and if it is able to be parsed, will return the number.
+            return this.getLong();
+        }
+    }
+
+    public long getLong(String prompt) {
+        System.out.println(prompt);
+        try {
+            return Long.parseLong(this.getString());
+        } catch (NumberFormatException e) {
+            System.out.println("You must enter a whole number.");
+//            // recursion! like a loop. will try to get the input again. and if it is able to be parsed, will return the number.
+            return this.getLong();
+        }
+    }
 }
 
 
