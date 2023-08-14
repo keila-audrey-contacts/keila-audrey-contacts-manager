@@ -1,7 +1,7 @@
-package manage;
+package src.manage;
 
+import src.util.Input;
 import util.CallAFriend;
-import util.Input;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,8 +19,30 @@ public class ContactsManager {
 
     public ContactsManager() {
         this.scanner = new Scanner(System.in);
-        System.out.println("1. View contacts\n2. Add a new contact.\n3. Search contact by name.\n4. Delete an existing contact\n5. Call a friend \n6. Exit");
-        int userMainMenuChoice = userInput.getInt("Enter an option (1,2,3,4,5, or 6):");
+        System.out.println("""
+                                     _______________________________
+                                    /            ( ___ ) o           \\
+                                    |________________________________|
+                                    |                                |
+                                    |                                |
+                                    |                                |
+                                    |                                |
+                                    |                                |
+                                    |     1. View contacts           |
+                                    |     2. Add a new contact       |
+                                    |     3. Search contact by name  |
+                                    |     4. Delete an existing      |
+                                    |     5. Call a friend           |
+                                    |     6. Exit"                   |
+                                    |                                | 
+                                    |                                |   
+                                    |                                |   
+                                    |                                |
+                                    | |____________________________| | 
+                                    |               ()               |
+                                    \\______________________________ _/
+                          
+                """);        int userMainMenuChoice = userInput.getInt("Enter an option (1,2,3,4,5, or 6):");
         if (userMainMenuChoice == 1) {
             viewContacts();
         }
@@ -51,7 +73,7 @@ public class ContactsManager {
     }
 
     public static void viewContacts() {
-        Path contactsList = Paths.get("manage/contacts.txt");
+        Path contactsList = Paths.get("src/contacts.txt");
         List<String> contactList = null;
         try {
             contactList = Files.readAllLines(contactsList);
@@ -77,7 +99,7 @@ public class ContactsManager {
     }
 
     public static void addContact() {
-        Path contactsList = Paths.get("manage/contacts.txt");
+        Path contactsList = Paths.get("src/contacts.txt");
         List<String> contacts = new ArrayList<>();
         try {
             String contactName = userInput.getString("Please input contact name");
@@ -103,7 +125,7 @@ public class ContactsManager {
     }
 
     public static void searchContact() {
-        Path contactsListPath = Paths.get("manage/contacts.txt");
+        Path contactsListPath = Paths.get("src/contacts.txt");
         List<String> contactsList = null;
         try {
             contactsList = Files.readAllLines(contactsListPath);
@@ -128,7 +150,7 @@ public class ContactsManager {
 
 
     public static void deleteContact() {
-        Path contactsListPath = Paths.get("manage/contacts.txt");
+        Path contactsListPath = Paths.get("src/contacts.txt");
         List<String> contactsList = null;
         try {
             contactsList = Files.readAllLines(contactsListPath);
