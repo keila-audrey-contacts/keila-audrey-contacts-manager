@@ -64,6 +64,7 @@ public class ContactsManager {
     }
 
     public static void returnToMain() {
+        System.out.println(" ");
         boolean userConfirmMenu = userInput.yesNo("Would you like to return to the main menu? (y/n)");
         if (userConfirmMenu == true) {
             ContactsManager returnToMenu = new ContactsManager();
@@ -101,9 +102,11 @@ public class ContactsManager {
     public static void addContact() {
         Path contactsList = Paths.get("src/contacts.txt");
         List<String> contacts = new ArrayList<>();
+
         try {
             String contactName = userInput.getString("Please input contact name");
             long contactNumber;
+
             while (true) {
                 contactNumber = userInput.getLong("Please input 10-digit contact number");
                 if (isValidContactNumber(contactNumber)) {
@@ -112,17 +115,24 @@ public class ContactsManager {
                     System.out.println("Contact number should have exactly 10 digits.");
                 }
             }
+
             String formattedContactNumber = formatContactNumber(contactNumber);
-            String contactInfo = String.format("%-10s | %-15s\n", contactName, formattedContactNumber);
+            String contactInfo = String.format("%-10s | %-15s", contactName, formattedContactNumber);
 
             contacts.add(contactInfo);
-
             Files.write(contactsList, contacts, StandardOpenOption.APPEND);
+
             viewContacts();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+
+
+
+
 
     public static void searchContact() {
         Path contactsListPath = Paths.get("src/contacts.txt");
